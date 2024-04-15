@@ -1,0 +1,65 @@
+import { ProfileService } from "src/users/services/profile.service";
+import { UsersService } from "src/users/services/users.service";
+import { MuteRepository, RoomMessageRepository, RoomsChatRepository, RoomsUsersRefRepository } from "src/utils/repositories/roomschat.repository";
+import { Room } from "../entities/room.entity";
+import { RoomsUsersRef } from "../entities/rooms_users_ref.entity";
+import { RoomDto, RoomInfo } from "src/utils/dto";
+import { ChatGatewayService } from "src/websockets/chat-gateway/chat-gateway.service";
+import { FriendReqService } from "src/users/services/friendreq.service";
+import { NotifService } from "src/notif/notif.service";
+export declare class RoomsChatService {
+    private readonly roomRepository;
+    private readonly roomsUsersRefRepository;
+    private readonly roomMessageRepository;
+    private readonly chatGatewayService;
+    private readonly friendReqService;
+    private readonly userService;
+    private readonly profileService;
+    private readonly notifService;
+    private readonly muteRepository;
+    constructor(roomRepository: RoomsChatRepository, roomsUsersRefRepository: RoomsUsersRefRepository, roomMessageRepository: RoomMessageRepository, chatGatewayService: ChatGatewayService, friendReqService: FriendReqService, userService: UsersService, profileService: ProfileService, notifService: NotifService, muteRepository: MuteRepository);
+    createRoom(roomInfo: RoomInfo): Promise<{
+        roomId: number;
+        roomName: string;
+        ChannelType: number;
+        ownerAvatar: string;
+        numberOfMembers: number;
+        owner: number;
+        InRoom: boolean;
+        LastMessageTime: string;
+        UnReadedCount: number;
+    }>;
+    getRooms(current_user_id: number): Promise<RoomDto[]>;
+    getRoomInfo(room_id: number): Promise<Room>;
+    AddUserToRoom(room_id: number, curent_user_id: number, new_user_id: number, roll: string, event?: string): Promise<RoomsUsersRef>;
+    do_event_by_token(current_user_id: number, notif_id: number, userRef_token: string, event: string): Promise<{
+        res: RoomsUsersRef;
+        message: string;
+    }>;
+    acceptInviteToRoom(current_user_id: number, room_id: number): Promise<RoomsUsersRef>;
+    inviteFriendToRoom(current_user_id: number, room_id: number, invited_user_id: number): Promise<RoomsUsersRef>;
+    JoinRoom(current_user_id: number, room_id: number, password: string, roll: string): Promise<RoomsUsersRef>;
+    checkMuteStatus(userRef: RoomsUsersRef): Promise<number>;
+    getRoomMembers(room_id: number, user_id: number): Promise<any[]>;
+    createRoomMessage(room_id: number, user_id: number, message: string): Promise<{
+        messageId: number;
+        userId: number;
+        userName: string;
+        userAvatar: string;
+        time: string;
+        fullTime: string;
+        message: string;
+    }>;
+    updateUserRef_number_of_unread_messages(userRef_id: any, room_id: any): Promise<RoomsUsersRef>;
+    getRoomMessages(room_id: number, user_id: number): Promise<any[]>;
+    banUserFromRoom(current_user_id: number, room_id: number, banned_user_id: number): Promise<RoomsUsersRef>;
+    UnbanUserFromRoom(current_user_id: number, room_id: number, banned_user_id: number): Promise<void>;
+    kickUserFromRoom(current_user_id: number, room_id: number, kicked_user_id: number): Promise<void>;
+    leaveRoom(current_user_id: number, room_id: number, owner_check?: boolean): Promise<RoomsUsersRef>;
+    SetAdminSatatus(current_user_id: number, room_id: number, admin_user_to_set_id: number, MemberStatus: string): Promise<RoomsUsersRef>;
+    updateRoomInfo(roomInfo: RoomInfo): Promise<Room>;
+    deleteRoom(current_user_id: number, roomId: number): Promise<Room>;
+    leaveOwner(current_user_id: number, room_id: number, new_owner_id: number): Promise<RoomsUsersRef>;
+    muteUserFromRoom(current_user_id: number, room_id: number, muted_user_id: number, mute_time_second: number): Promise<RoomsUsersRef>;
+    UnmuteUserFromRoom(current_user_id: number, room_id: number, muted_user_id: number): Promise<RoomsUsersRef>;
+}

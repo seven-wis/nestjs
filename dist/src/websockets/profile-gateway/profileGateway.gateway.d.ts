@@ -1,0 +1,37 @@
+import { ProfileGatewayService } from './profileGateway.service';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { UsersService } from 'src/users/services/users.service';
+import { Socket } from 'socket.io';
+import { ProfileService } from 'src/users/services/profile.service';
+import { FriendReqService } from 'src/users/services/friendreq.service';
+import { BlockService } from 'src/users/services/block.service';
+import { BettingService } from 'src/users/services/betting.service';
+export type SocketMiddleware = (socket: Socket, next: (err?: Error) => void) => void;
+export declare class ProfileGateway {
+    private readonly profileGatewayService;
+    private readonly jwtService;
+    private readonly configService;
+    private readonly usersService;
+    private readonly profileService;
+    private readonly friendReqService;
+    private readonly blockService;
+    private readonly bettingService;
+    private EventActions;
+    constructor(profileGatewayService: ProfileGatewayService, jwtService: JwtService, configService: ConfigService, usersService: UsersService, profileService: ProfileService, friendReqService: FriendReqService, blockService: BlockService, bettingService: BettingService);
+    private server;
+    private static ProfileClientsMap;
+    afterInit(client: Socket): void;
+    EmitMessage(target: any, event: string, data: any): Promise<void>;
+    leaveAllRooms(client: Socket): Promise<void>;
+    joinRoom(client: Socket, room: string): Promise<void>;
+    handleConnection(client: any, ...args: any[]): Promise<void>;
+    handleDisconnect(client: any): Promise<void>;
+    enter_room(client: Socket, data: any): Promise<void>;
+    friend_Ship_event(user_event_sender: number, user_event_receiver: number): Promise<void>;
+    friend_ship_event_emitter(event: string, current_user_id: number, friend_id: number): Promise<void>;
+    friend_ship_event(client: Socket, data: any): Promise<void>;
+    notification_update(user_target_id: number): Promise<void>;
+    invite_to_play(client: Socket, data: any): Promise<void>;
+    newBetter(client: Socket, data: any): Promise<void>;
+}

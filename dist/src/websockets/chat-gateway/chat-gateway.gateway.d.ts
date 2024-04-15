@@ -1,0 +1,36 @@
+import { ChatGatewayService } from './chat-gateway.service';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { UsersService } from 'src/users/services/users.service';
+import { Socket } from 'socket.io';
+import { PrivateChatService } from 'src/chat/services/Privatechat.service';
+import { ProfileService } from 'src/users/services/profile.service';
+import { RoomsChatService } from 'src/chat/services/roomschat.service';
+export type SocketMiddleware = (socket: Socket, next: (err?: Error) => void) => void;
+export declare class ChatGateway {
+    private readonly chatGatewayService;
+    private readonly jwtService;
+    private readonly configService;
+    private readonly usersService;
+    private readonly PrivateChatService;
+    private readonly profileService;
+    private readonly roomsChatService;
+    constructor(chatGatewayService: ChatGatewayService, jwtService: JwtService, configService: ConfigService, usersService: UsersService, PrivateChatService: PrivateChatService, profileService: ProfileService, roomsChatService: RoomsChatService);
+    private server;
+    private static ChatClientsMap;
+    afterInit(client: Socket): void;
+    handleConnection(client: any, ...args: any[]): void;
+    handleDisconnect(client: any): void;
+    EmitMessage(target: any, event: string, data: any): Promise<void>;
+    BroadcastMessage(event: string, data: any): Promise<void>;
+    GetUserSocketId(userId: number): Promise<Socket> | null;
+    leaveAllRooms(client: Socket): Promise<void>;
+    joinRoom(client: Socket, room: string): Promise<void>;
+    handleLeavePm(client: any, data: any): Promise<void>;
+    handleJoinPm(client: any, data: any): Promise<void>;
+    handleMessage(client: any, data: any): Promise<void>;
+    handleJoinRoom(client: any, data: any): Promise<void>;
+    handleCreateMessageRoom(client: Socket, RoomData: any): Promise<void>;
+    handleNewRoomMessage(client: Socket, data: any): Promise<void>;
+    handleUpdateRoom(client: Socket, RoomData: any): Promise<void>;
+}
